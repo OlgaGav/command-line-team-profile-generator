@@ -1,7 +1,12 @@
 // Packages needed for this application
 let inquirer = require('inquirer');
 let fs = require('fs');
-let generateHTML = require ('./dist/generateHTML');
+let generateHtml = require ('./dist/generateHtml');
+let generateCss = require ('./dist/generateCss');
+let Employee = require('./lib/Employee');
+let Engineer = require('./lib/Engineer');
+let Manager = require('./lib/Manager');
+let Intern = require('./lib/Intern');
 
 // Array collect roles that user can add. Based on the role some additional parameters will be asked
 const teamChoices = ["Employee", "Manager", "Engineer", "Intern", "Exit"];
@@ -17,7 +22,7 @@ const clearTeamMember = () => {
     name: "",
     email: "",
     role: "",
-    additionalParam: "",
+    // additionalParam: "",
   };
 };
 
@@ -43,7 +48,7 @@ const initTeam = () => {
     });
 };
 
-// this function gets the user's name and adds it to the teamMemeber object
+// this function gets the user's name and adds it to the teamMember object
 const getRequiredInfo = () => {
   inquirer
     .prompt([
@@ -78,7 +83,8 @@ const getRequiredInfo = () => {
       teamMember.email = res.email;
 
       if (teamMember.role === "Employee") {
-        team.push(teamMember);
+        let member = new Employee(teamMember.id, teamMember.name, teamMember.email)
+        team.push(member);
         anotherTeamMember();
       } else if (teamMember.role === "Manager") {
         getOfficeNumber();
@@ -101,8 +107,8 @@ const getOfficeNumber = () => {
       },
     ])
     .then((res) => {
-      teamMember.additionalParam = res.officeNumber;
-      team.push(teamMember);
+      let member = new Manager(teamMember.id, teamMember.name, teamMember.email, res.officeNumber);
+      team.push(member);
       anotherTeamMember();
     });
 };
@@ -116,8 +122,8 @@ const getGithubUserName = () => {
       },
     ])
     .then((res) => {
-      teamMember.additionalParam = res.github;
-      team.push(teamMember);
+      let member = new Engineer(teamMember.id, teamMember.name, teamMember.email, res.github);
+      team.push(member);
       anotherTeamMember();
     });
 };
@@ -131,8 +137,8 @@ const getSchool = () => {
       },
     ])
     .then((res) => {
-      teamMember.additionalParam = res.school;
-      team.push(teamMember);
+      let member = new Intern(teamMember.id, teamMember.name, teamMember.email, res.school);
+      team.push(member);
       anotherTeamMember();
     });
 };
@@ -151,10 +157,11 @@ const anotherTeamMember = () => {
         clearTeamMember();
         initTeam();
       } else {
-        // this is to confirm team object
-        console.log("Your team:", team);
         answers = JSON.stringify(team);
-        writeToFile('index.html', answers);
+        console.log("Your team:", answers);
+        writeToFile('index.html', team);
+        let cssFileContent = generateCss('#bcdbdf', '#feffdf', '#40a8c4', '#596e79');
+        writeToFileCSS('style.css', cssFileContent);
       }
     })
     .then(() => console.log('Successfully wrote to index.html'))
@@ -163,15 +170,26 @@ const anotherTeamMember = () => {
 
 
 // Function to generate HTML
-function writeToFile(fileName, answers) {
-    data = JSON.parse(answers);
-    let content = generateHTML(data);
-    
+function writeToFile(fileName, team) {
+  
+    // data = JSON.parse(answers);
+    let content =generateHtml(team);
     try {
         fs.writeFileSync(fileName, content);
     } catch (error) {
+        console.log('FAILED: index.html was not generated.');
         console.log(error);
     }
+}
+
+// Function to generate CSS
+function writeToFileCSS(fileName, content) {
+        try {
+          fs.writeFileSync(fileName, content)
+        } catch (error) {
+          console.log('FAILED: style.css was not generated.');
+          console.log(error);
+        }
 }
 
 // Function call to initialize app
