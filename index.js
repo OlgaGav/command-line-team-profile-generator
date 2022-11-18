@@ -1,30 +1,17 @@
 // Packages needed for this application
 let inquirer = require('inquirer');
 let fs = require('fs');
-let generateHtml = require ('./dist/generateHtml');
-let generateCss = require ('./dist/generateCss');
-let Employee = require('./lib/Employee');
-let Engineer = require('./lib/Engineer');
-let Manager = require('./lib/Manager');
-let Intern = require('./lib/Intern');
+let Intern = require('./lib/Intern.js');
+let Manager = require('./lib/Manager.js');
+let Employee = require('./lib/Employee.js');
+let Engineer = require('./lib/Engineer.js');
+let generateHtml = require('./src/generateHtml.js');
+let generateCss = require('./src/generateCss.js');
 
 // Array collect roles that user can add. Based on the role some additional parameters will be asked
-const teamChoices = ["Employee", "Manager", "Engineer", "Intern", "Exit"];
+const teamChoices = ["Employee", "Manager", "Engineer", "Intern"];
 // The team will be an array containing objects of employees (team members)
 let team = [];
-let teamMember;
-
-// This function allows us to reset the teamMember object for re-use in an team
-const clearTeamMember = () => {
-  // here we define an empty teamMember object
-  teamMember = {
-    id: "",
-    name: "",
-    email: "",
-    role: "",
-    // additionalParam: "",
-  };
-};
 
 // initTeam() will be how we begin the application
 const initTeam = () => {
@@ -33,23 +20,17 @@ const initTeam = () => {
       {
         name: "start",
         type: "list",
-        message: "Select role of team member you want to add to your team structure or 'Exit' to finish the process: ",
+        message: "Select role of team member you want to add to your team structure: ",
         choices: teamChoices,
       },
     ])
     .then((res) => {
-      if (res.start === "Exit") {
-        return;
-      } else {
-        clearTeamMember();
-        teamMember.role = res.start;
-        getRequiredInfo();
-      }
+      getRequiredInfo(res.start);
     });
 };
 
 // this function gets the user's name and adds it to the teamMember object
-const getRequiredInfo = () => {
+const getRequiredInfo = (role) => {
   inquirer
     .prompt([
       {
@@ -78,27 +59,22 @@ const getRequiredInfo = () => {
       },      
     ])
     .then((res) => {
-      teamMember.id = res.id;
-      teamMember.name = res.name;
-      teamMember.email = res.email;
-
-      if (teamMember.role === "Employee") {
-        let member = new Employee(teamMember.id, teamMember.name, teamMember.email)
+      let member = new Employee(res.id, res.name, res.email);
+      if (role === "Employee") {
         team.push(member);
         anotherTeamMember();
-      } else if (teamMember.role === "Manager") {
-        getOfficeNumber();
-      } else if (teamMember.role === "Engineer") {
-        getGithubUserName();
-      } else if (teamMember.role === "Intern") {
-        getSchool();
+      } else if (role === "Manager") {
+        getOfficeNumber(member);
+      } else if (role === "Engineer") {
+        getGithubUserName(member);
+      } else if (role === "Intern") {
+        getSchool(member);
       }
-
     });
 };
 
 // request of the addiitonal questions based on the role
-const getOfficeNumber = () => {
+const getOfficeNumber = (member) => {
   inquirer
     .prompt([
       {
@@ -107,13 +83,13 @@ const getOfficeNumber = () => {
       },
     ])
     .then((res) => {
-      let member = new Manager(teamMember.id, teamMember.name, teamMember.email, res.officeNumber);
-      team.push(member);
+      let manager = new Manager(member.id, member.name, member.email, res.officeNumber);
+      team.push(manager);
       anotherTeamMember();
     });
 };
 
-const getGithubUserName = () => {
+const getGithubUserName = (member) => {
   inquirer
     .prompt([
       {
@@ -122,13 +98,13 @@ const getGithubUserName = () => {
       },
     ])
     .then((res) => {
-      let member = new Engineer(teamMember.id, teamMember.name, teamMember.email, res.github);
-      team.push(member);
+      let engineer = new Engineer(member.id, member.name, member.email, res.github);
+      team.push(engineer);
       anotherTeamMember();
     });
 };
 
-const getSchool = () => {
+const getSchool = (member) => {
   inquirer
     .prompt([
       {
@@ -137,8 +113,8 @@ const getSchool = () => {
       },
     ])
     .then((res) => {
-      let member = new Intern(teamMember.id, teamMember.name, teamMember.email, res.school);
-      team.push(member);
+      let intern = new Intern(member.id, member.name, member.email, res.school);
+      team.push(intern);
       anotherTeamMember();
     });
 };
@@ -154,14 +130,14 @@ const anotherTeamMember = () => {
     ])
     .then((res) => {
       if (res.next) {
-        clearTeamMember();
         initTeam();
       } else {
-        answers = JSON.stringify(team);
-        console.log("Your team:", answers);
-        writeToFile('index.html', team);
-        let cssFileContent = generateCss('#bcdbdf', '#feffdf', '#40a8c4', '#596e79');
-        writeToFileCSS('style.css', cssFileContent);
+        team = JSON.stringify(team);
+
+        console.log(`=========FINILIZED TEAM ARRAY=========`);
+        console.log(team);
+
+        writeToFile('./dist/index.html', team);
       }
     })
     .then(() => console.log('Successfully wrote to index.html'))
@@ -171,25 +147,15 @@ const anotherTeamMember = () => {
 
 // Function to generate HTML
 function writeToFile(fileName, team) {
-  
-    // data = JSON.parse(answers);
-    let content =generateHtml(team);
+    let content = generateHtml(team);
+    let cssFileContent = generateCss('#bcdbdf', '#feffdf', '#40a8c4', '#596e79');
     try {
         fs.writeFileSync(fileName, content);
+        fs.writeFileSync('./dist/style.css', cssFileContent);
     } catch (error) {
-        console.log('FAILED: index.html was not generated.');
+        console.log('FAILED to generate files.');
         console.log(error);
     }
-}
-
-// Function to generate CSS
-function writeToFileCSS(fileName, content) {
-        try {
-          fs.writeFileSync(fileName, content)
-        } catch (error) {
-          console.log('FAILED: style.css was not generated.');
-          console.log(error);
-        }
 }
 
 // Function call to initialize app

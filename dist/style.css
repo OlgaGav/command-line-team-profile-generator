@@ -1,15 +1,8 @@
-
-//--light: #bcdbdf;
-//--deck_background: #feffdf;
-//--card_background: #40a8c4;
-//--dark: #596e79;
-
-function generateCss(light, deckBgr, cardBgr, dark) {
-  return `:root{
-    --light: ${light};
-    --deck_background: ${deckBgr};
-    --card_background: ${cardBgr};
-    --dark: ${dark};
+:root{
+    --light: #bcdbdf;
+    --deck_background: #feffdf;
+    --card_background: #40a8c4;
+    --dark: #596e79;
   }
   
     .background {
@@ -42,5 +35,4 @@ function generateCss(light, deckBgr, cardBgr, dark) {
         flex: 0 1 20% !important;
         margin: 1rem !important;
   
-    }`;
-}
+    }
