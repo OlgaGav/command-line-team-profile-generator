@@ -1,48 +1,50 @@
-
-//--light: #bcdbdf;
-//--deck_background: #feffdf;
-//--card_background: #40a8c4;
-//--dark: #596e79;
-
-function generateCss(light, deckBgr, cardBgr, dark) {
-  return `:root{
-    --light: ${light};
-    --deck_background: ${deckBgr};
-    --card_background: ${cardBgr};
-    --dark: ${dark};
-  }
+function generateCss(lightest, ligth, dark, darkest) {
+  return `
+  :root{
+    --first: ${lightest};
+    --second: ${ligth};
+    --third: ${dark};
+    --forth: ${darkest};
+     }
   
-    .background {
-        background: var(--deck_background);
-    }
-  
-    .card-header{
-        background: var(--card_background);
-    }
-  
-    .jumbotron{
-        background: var(--dark);
-        color: var(--light);
+     body {
+        color: var(--forth)
+      }
+      
+      .background {
+        background: var(--first);
+      }
+      
+      .card-deck {
+          padding: 1rem;
+          justify-items: center;
+        }
+      
+      .card-header {
+        background: var(--third);
+        color: var(--first);
+      }
+      
+      .jumbotron {
+        background: #343148FF;
+        color: var(--first);
         text-align: center;
         padding: 1.5rem;
         border-radius: 0rem;
-    }
-  
-    .list-group-item{
-        background: var(--light);
-    }
-  
-    .card-deck{
-        padding: 1rem;
-        justify-items: center;
-    }
-  
-    .card {
-        background-color: var(--card_background);
+      }
+      
+      .list-group-item {
+        background: var(--first);
+      }
+      
+      .card {
+        background-color: var(--second);
         flex: 0 1 20% !important;
         margin: 1rem !important;
-  
-    }`;
+        -webkit-box-shadow: 0px 10px 13px -7px #000000,
+          5px 5px 15px 5px rgba(0, 0, 0, 0);
+        box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+      }`;
 }
 
 module.exports = generateCss;

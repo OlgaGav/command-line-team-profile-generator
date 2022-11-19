@@ -1,7 +1,5 @@
 //function to generate html page with team structure based on the received answers
-function generateHtml(team) {
-
-  let data = JSON.parse(team);
+function generateHtml(data) {
 
   let htmlContent = 
   `<!DOCTYPE html>
@@ -16,6 +14,7 @@ function generateHtml(team) {
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
       <link rel="stylesheet" type="text/css" href="style.css"/>
       <title>Team Profile</title>
+      <link rel="icon" type="image/x-icon" href="https://emoji.fileformat.info/png/1f3e2.png"/>
     </head>
     <body class="background">
       <header>
@@ -27,10 +26,6 @@ function generateHtml(team) {
       <div class="card-deck" id="card-field">`;
 
   for (let i = 0; i < data.length; i++) {
-
-    console.log("------- rendering team member ----------");
-    console.log(data[i]);
-
     let card = generateCard(data[i]);
     htmlContent += card;
   }
@@ -40,24 +35,21 @@ function generateHtml(team) {
   return htmlContent;
 }
 
-
-
 // teamMember objects, instance of Employee, Engineer, Intern or Manager classes
-
 function generateCard(teamMember) {
   let cardHTML;
-  let name = teamMember.name;
-  let role = teamMember.role;
-  let id = teamMember.id;
-  let email = teamMember.email;
+  let name = teamMember.getName();
+  let role = teamMember.getRole();
+  let id = teamMember.getId();
+  let email = teamMember.getEmail();
 
   if (role === "Manager") {
     let number = teamMember.officeNumber;
     cardHTML =
     `<div class="card">
       <div class="card-header">
-        <h3>${name}</h3>
-        <h4>&#9883; Manager</h4>
+        <h4>${name}</h4>
+        <h5> &#x1f4f1; Manager</h5>
       </div>
       <div class="card-body">
       <ul class="list-group list-group-flush">
@@ -72,8 +64,8 @@ function generateCard(teamMember) {
     cardHTML =
     `<div class="card">
       <div class="card-header">
-        <h3>${name}</h3>
-        <h4>&#9832; Engineer</h4>
+        <h4>${name}</h4>
+        <h5> &#128187; Engineer</h5>
       </div>
       <div class="card-body">
       <ul class="list-group list-group-flush">
@@ -88,8 +80,8 @@ function generateCard(teamMember) {
     cardHTML =
     `<div class="card">
       <div class="card-header">
-        <h3>${name}</h3>
-        <h4>&#9883; Intern</h4>
+        <h4>${name}</h4>
+        <h5> &#x1f393; Intern</h5>
       </div>
       <div class="card-body">
       <ul class="list-group list-group-flush">
@@ -103,8 +95,8 @@ function generateCard(teamMember) {
     cardHTML = 
     `<div class="card">
       <div class="card-header">
-        <h3>${name}</h3>
-        <h4> &#9742; Employee</h4>
+        <h4>${name}</h4>
+        <h5>  &#127970; Employee</h5>
       </div>
       <div class="card-body">
       <ul class="list-group list-group-flush">
