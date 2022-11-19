@@ -31,6 +31,39 @@ describe("Intern", () => {
       expect(actual_school).toBe(school);
     });
 
+    test("Method setSchool() setup the school value", async () => {
+      // setup
+      const school = "school name";
+      const intern = new Intern(
+        "123",
+        "John Smith",
+        "test@test.com"
+      );
+
+      // running the code
+      intern.setSchool(school);
+
+      // verify the result
+      expect(intern.getSchool()).toBe(school);
+    });
+
+    test("Method setSchool() replace the previous school value when it was setup before", async () => {
+      // setup
+      const school = "new school name";
+      const intern = new Intern(
+        "123",
+        "John Smith",
+        "test@test.com",
+        "old school name"
+      );
+
+      // running the code
+      intern.setSchool(school);
+
+      // verify the result
+      expect(intern.getSchool()).toBe(school);
+    });
+
     test("Method getRole() return the valid role of the Intern", async () => {
       // setup
       const intern = new Intern(

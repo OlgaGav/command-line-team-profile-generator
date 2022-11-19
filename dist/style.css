@@ -14,10 +14,10 @@
         background: var(--first);
       }
       
-      .card-deck {
-          padding: 1rem;
-          justify-items: center;
-        }
+       .card-deck {
+           padding: 0 2rem;
+           justify-items: center;
+         }
       
       .card-header {
         background: var(--third);

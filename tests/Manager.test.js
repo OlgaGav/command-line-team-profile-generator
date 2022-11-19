@@ -39,6 +39,40 @@ describe("Manager", () => {
       expect(actual_officeNumber).toBe(officeNumber);
     });
 
+    test("Method getOfficeNumberl() setup the Office Number value", async () => {
+      // setup
+      const officeNumber = "123-456";
+      const manager = new Manager(
+        "123",
+        "John Smith",
+        "test@test.com"
+      );
+
+      // running the code
+      manager.setOfficeNumber(officeNumber);
+
+      // verify the result
+      expect(manager.getOfficeNumber()).toBe(officeNumber);
+    });
+
+    test("Method getOfficeNumberl() replace the previous officeNumber value when it was setup before", async () => {
+      // setup
+      const officeNumber = "ext.123";
+      const manager = new Manager(
+        "123",
+        "John Smith",
+        "test@test.com",
+        "ext.56"
+      );
+
+      // running the code
+      manager.setOfficeNumber(officeNumber);
+
+      // verify the result
+      expect(manager.getOfficeNumber()).toBe(officeNumber);
+    });
+
+
     test("Method getRole() return the valid role of the Manager", async () => {
       // setup
       const manager = new Manager(

@@ -16,7 +16,7 @@ function generateCss(lightest, ligth, dark, darkest) {
       }
       
       .card-deck {
-          padding: 1rem;
+          padding: 0 2rem;
           justify-items: center;
         }
       

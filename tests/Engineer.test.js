@@ -36,6 +36,39 @@ describe("Engineer", () => {
       expect(actual_github).toBe(github);
     });
 
+    test("Method setGithub() setup the github value", async () => {
+      // setup
+      const github = "github_username";
+      const engineer = new Engineer(
+        "123",
+        "John Smith",
+        "test@test.com"
+      );
+
+      // running the code
+      engineer.setGithub(github);
+
+      // verify the result
+      expect(engineer.getGithub()).toBe(github);
+    });
+
+    test("Method setGithub() replace the previous github value when it was setup before", async () => {
+      // setup
+      const github = "github_new_username";
+      const engineer = new Engineer(
+        "123",
+        "John Smith",
+        "test@test.com",
+        "github_old_username"
+      );
+
+      // running the code
+      engineer.setGithub(github);
+
+      // verify the result
+      expect(engineer.getGithub()).toBe(github);
+    });
+
     test("Method getRole() return the valid role of the Engineer", async () => {
       // setup
       const engineer = new Engineer(
