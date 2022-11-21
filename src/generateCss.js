@@ -17,7 +17,7 @@ function generateCss(lightest, ligth, dark, darkest) {
       
       .card-deck {
           padding: 0 2rem;
-          justify-items: center;
+          justify-content: center !important;
         }
       
       .card-header {
@@ -39,7 +39,7 @@ function generateCss(lightest, ligth, dark, darkest) {
       
       .card {
         background-color: var(--second);
-        flex: 0 1 20% !important;
+        flex: 0 1 auto !important;
         margin: 1rem !important;
         -webkit-box-shadow: 0px 10px 13px -7px #000000,
           5px 5px 15px 5px rgba(0, 0, 0, 0);
