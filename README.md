@@ -6,8 +6,14 @@
   ## Description
   
   This application help generate html style contacts of the team
-
+  
+  start with command-line question-answers
+  
   ![this image display the screenshot of the 'Generate 'My Team' profile' application](./assets/images/command-line-questions.png)
+  
+  Generated HTML page example: 
+  
+  ![this image display the screenshot of html version generated 'My Team' application](./assets/images/generated-html.png)
 
   ## Table of Contents
  
@@ -32,7 +38,7 @@
   - Manager
   - Engineer
   - Intern
-  s
+  
   1. run the application from the command line
   2. add all your team members, answering the questions
   3. dist/index.html when you complete adding all team members
@@ -40,8 +46,6 @@
   A walkthrough video demonstrating the functionality of the application: 
 
   https://drive.google.com/file/d/1oXlszmUiPBBGLiydMtNfLtMY5KiCVAbz/view
-
-  ![this image display the screenshot of html version generated 'My Team' application](./assets/images/generated-html.png)
   
   ## Credits
   
@@ -88,5 +92,7 @@
   To run unit tests with coverage and see all tests grouped by functionality run:
 
   ``npm run test -- --verbose --coverage``
+  
+  ![example of tests run with details](./assets/images/ran_unit_tests_with_coverage.png)
 
   
