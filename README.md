@@ -32,10 +32,14 @@
   - Manager
   - Engineer
   - Intern
-  
+  s
   1. run the application from the command line
   2. add all your team members, answering the questions
   3. dist/index.html when you complete adding all team members
+
+  A walkthrough video demonstrating the functionality of the application: 
+
+  https://drive.google.com/file/d/1oXlszmUiPBBGLiydMtNfLtMY5KiCVAbz/view
 
   ![this image display the screenshot of html version generated 'My Team' application](./assets/images/generated-html.png)
   
